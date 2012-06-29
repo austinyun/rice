@@ -1,0 +1,19 @@
+{
+  "name": "rice",
+  "description": "Next level Git powered Javascript blog.",
+  "tags": ["git","node","blog","jade","markdown"],
+  "version": "0.0.1",
+  "author": "Austin Yun <w.austin.yun@gmail.com> (http://austinyun.com)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/austinyun/rice"},
+  "bugs": "http://github.com/austinyun/rice/issues",
+  "engines": ["node >= 0.8.0"],
+  "main": "./rice.js",
+  "dependencies": {
+    "jade": ">=0.26.0",
+    "union": ">=0.3.2",
+    "mapleTree": ">=0.1.12",
+  }
+}
