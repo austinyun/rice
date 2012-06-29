@@ -16,7 +16,7 @@ Project Goals
 =============
 
 * Leverage existing Node modules for as much functionality as possible
-* Be lean, quick to setup, and easily deployable to Heroku
+* Be lean, quick to setup, and easily deployable to Heroku and other cloud services
 * No reliance on a database
 * Run my personal blog
 
