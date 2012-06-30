@@ -13,7 +13,6 @@
   "main": "./rice.js",
   "dependencies": {
     "jade": ">=0.26.0",
-    "union": ">=0.3.2",
-    "mapleTree": ">=0.1.12"
+    "choreographer": ">=0.2.3a"
   }
 }
