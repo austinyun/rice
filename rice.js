@@ -1,15 +1,15 @@
 var http = require('http'),
     fs = require('fs'),
     path = require('path'),
-    maple = require('mapleTree'),
-    router = new maple.RouteTree();
+    router = require('choreographer').router();
 
-function rice() {
+module.exports = function rice() {
 
-  // TODO configure router
-  router.define('/', function (req, res) {});
+  router.notFound( function(req, res) {
+    res.writeHead(404, {'Content-Type': 'text/plain'});
+    res.end('Error 404: ' + req.url + ' not found.');
 
+  });
 
-  return http.createServer(function (req, res) {
-    // TODO should be router.match() something I think
-  }).listen(8080);
+  return http.createServer(router);
+}
