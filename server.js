@@ -1,3 +1,3 @@
 var rice = require('./rice')
 
-rice().listen(8080);
+rice().listen(80);
