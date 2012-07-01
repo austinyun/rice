@@ -11,7 +11,8 @@
   "bugs": "http://github.com/austinyun/rice/issues",
   "main": "./server.js",
   "engines": {
-    "node": ">=0.8"
+    "node": ">=0.8",
+    "npm": ">=1.1"
   },
   "dependencies": {
     "git-fs": ">=0.0.9",
