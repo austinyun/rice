@@ -16,11 +16,18 @@ module.exports = function rice() {
   // Initialize git-fs with the cwd
   git(process.cwd());
 
-  router.get("/", function (req, res) {
-    res.end("Homepage");
+  router.get("/", function(req, res) {
+    git.getHead( function(err, head) {
+      if (err) { throw err; }
+      git.readFile(head, "index.html", function(err, data) {
+        if (err) { throw err; }
+        res.writeHead(200, { "Content-Type": "text/html"});
+        res.end(data, "utf-8");
+      });
+    });
   });
 
-  router.get("/favicon.ico", function (req, res) {
+  router.get("/favicon.ico", function(req, res) {
     res.writeHead(200, { "Content-Type": "image/x-icon" });
     res.end(fs.readFile("favicon.ico", function(err, icon) {
       if (err) { throw err; }
@@ -28,9 +35,9 @@ module.exports = function rice() {
     }));
   });
 
-  router.get("/*", function (req, res) {
-    console.error("route hit");
-    git.readFile("fs", req.url, function (err, data) {
+  router.get("/*", function(req, res) {
+    console.error("Variable route hit");
+    git.readFile("fs", req.url, function(err, data) {
       if (err) { return write404(req, res); }
       console.log(data.toString()); // Debugging code
       res.end(data.toString());
