@@ -1,0 +1,28 @@
+!!! html
+html(lang="en")
+    head.
+        <meta charset="utf-8">
+        <title>Your Page Title Here :)</title>
+        <meta name="description" content="A blogging engine thing">
+        <meta name="author" content="Austin Yun">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <link rel="stylesheet" href="../public/stylesheets/base.css">
+        <link rel="stylesheet" href="../public/stylesheets/skeleton.css">
+        <link rel="stylesheet" href="../public/stylesheets/layout.css">
+        <link rel="shortcut icon" href="../public/images/favicon.ico">
+        <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="../public/images/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="../public/images/apple-touch-icon-114x114.png">
+    body.container
+        block head
+            header#page_header
+                h1 Page Header
+                hr
+
+        block nav
+
+        block content
+
+        block foot
+            footer#page_footer
+            p &copy; 2012 Austin Yun
