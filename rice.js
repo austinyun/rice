@@ -1,7 +1,6 @@
 var http = require("http"),
     fs = require("fs"),
     git = require("git-fs"),
-    path = require("path"),
     router = require("choreographer").router();
 
 module.exports = function rice() {

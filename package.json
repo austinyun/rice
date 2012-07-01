@@ -12,6 +12,7 @@
   "engines": ["node >= 0.8.0"],
   "main": "./rice.js",
   "dependencies": {
+    "git-fs": ">=0.0.9",
     "jade": ">=0.26.0",
     "choreographer": ">=0.2.3a"
   }
