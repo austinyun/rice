@@ -10,7 +10,7 @@
     "url": "http://github.com/austinyun/rice"},
   "bugs": "http://github.com/austinyun/rice/issues",
   "engines": ["node >= 0.8.0"],
-  "main": "./rice.js",
+  "main": "./server.js",
   "dependencies": {
     "git-fs": ">=0.0.9",
     "jade": ">=0.26.0",
