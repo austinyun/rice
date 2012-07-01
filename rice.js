@@ -6,6 +6,14 @@ var http = require("http"),
 
 module.exports = function rice() {
 
+  // Someone tell me if the function scope here is fine or if I need to wrap
+  // this in a var write404 = function(req, res) {
+
+  function write404(req, res) {
+    res.writeHead(404, { "Content-Type": "text/plain"});
+    res.end("Error 404: " + req.url + " not found.");
+    return res;
+  }
   // Initialize git-fs with the cwd
   git(process.cwd());
 
@@ -23,20 +31,11 @@ module.exports = function rice() {
 
   router.get("/*", function (req, res) {
     console.error("route hit");
-
-    // At the moment, throws an exception and crashes if you try for a file
-    // that's not there
-
     git.readFile("fs", req.url, function (err, data) {
-      if (err) { throw err; }
-      console.log(data.toString());
+      if (err) { return write404(req, res); }
+      console.log(data.toString()); // Debugging code
       res.end(data.toString());
     });
-  });
-
-  router.notFound( function (req, res) {
-    res.writeHead(404, { "Content-Type": "text/plain" });
-    res.end("Error 404: " + req.url + " not found.");
   });
 
   return http.createServer(router);
