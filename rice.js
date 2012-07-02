@@ -1,7 +1,8 @@
 var http = require("http"),
     fs = require("fs"),
     dot = require("dot"),
-    router = require("choreographer").router();
+    router = require("choreographer").router(),
+    parse = require("./parse");
 
 module.exports = function rice() {
 
@@ -10,17 +11,15 @@ module.exports = function rice() {
       "date":"2012-01-02",
       "summary":"Summary of the article"
     },
-
     "Test Article Two": {
       "date":"2012-01-02",
       "summary":"Summary of the article"
     },
-
     "Test Article Three": {
       "date":"2012-01-02",
       "summary":"Summary of the article"
     }
-  }
+  };
 
   router.get("/", function(req, res) {
     fs.readFile("templates/index.dot", function(err, template) {
@@ -42,7 +41,6 @@ module.exports = function rice() {
   router.get("/public/**", function(req, res, path) {
     fs.readFile("public/" + path, function(err, data) {
       if (err) { throw err; }
-      console.log(path);
       res.end(data);
     });
   });
@@ -50,7 +48,6 @@ module.exports = function rice() {
   router.get("/public/stylesheets/**", function(req, res, path) {
     fs.readFile("public/stylesheets/" + path, function(err, data) {
       if (err) { throw err; }
-      console.log(path);
       res.end(data);
     });
   });
@@ -58,23 +55,22 @@ module.exports = function rice() {
   router.get("/public/images/**", function(req, res, path) {
     fs.readFile("public/images/" + path, function(err, data) {
       if (err) { throw err; }
-      console.log(path);
       res.end(data);
     });
   });
 
   router.get("/*", function(req, res, path) {
     console.log("Variable route hit");
-    fs.readFile(path, function(err, data) {
+    fs.readFile("posts/" + path + ".md", function(err, data) {
+      if (err) { 
+        // Here's the 404 path
+        console.log("Variable route did not exist");
+        res.writeHead(404, { "Content-Type": "text/plain"});
+        return res.end("Error 404: " + req.url + " not found.");
+      }
       console.log("Var serving " + path);
       res.end(data);
     })
-  });
-
-  router.notFound(function(req, res) {
-    res.writeHead(404, { "Content-Type": "text/plain"});
-    res.end("Error 404: " + req.url + " not found.");
-    console.log("router.notFound called on " + req.url);
   });
 
   return http.createServer(router);

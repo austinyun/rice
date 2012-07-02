@@ -15,7 +15,9 @@
     "npm": ">=1.1"
   },
   "dependencies": {
-    "jade": ">=0.26.0",
-    "choreographer": ">=0.2.3a"
+    "dot": "latest",
+    "choreographer": "latest",
+    "marked" : "latest",
+    "hljs" : "latest"
   }
 }
