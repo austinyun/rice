@@ -4,10 +4,9 @@ var http = require("http"),
     jade = require("jade"),
     router = require("choreographer").router();
 
-module.exports = function rice() {
+module.exports = function rice(repo) {
 
-  // Initialize git-fs with the cwd
-  git(process.cwd());
+  git(repo);
 
   router.get("/", function(req, res) {
     git.getHead( function(err, head) {
