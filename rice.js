@@ -1,15 +1,32 @@
 var http = require("http"),
     fs = require("fs"),
-    jade = require("jade"),
+    dot = require("dot"),
     router = require("choreographer").router();
 
 module.exports = function rice() {
 
+  var testArticleList = {
+    "Test Article One": {
+      "date":"2012-01-02",
+      "summary":"Summary of the article"
+    },
+
+    "Test Article Two": {
+      "date":"2012-01-02",
+      "summary":"Summary of the article"
+    },
+
+    "Test Article Three": {
+      "date":"2012-01-02",
+      "summary":"Summary of the article"
+    }
+  }
+
   router.get("/", function(req, res) {
-    fs.readFile("templates/index.jade", function(err, data) {
+    fs.readFile("templates/index.dot", function(err, template) {
       if (err) { throw err; }
       res.writeHead(200, { "Content-Type": "text/html"});
-      res.end(jade.compile(data, {"filename":"templates/index.jade"})(), "utf-8");
+      res.end(dot.template(template)(testArticleList));
     });
   });
 
