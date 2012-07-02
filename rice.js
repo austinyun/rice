@@ -6,11 +6,10 @@ var http = require("http"),
 module.exports = function rice() {
 
   router.get("/", function(req, res) {
-      fs.readFile("templates/index.jade", function(err, data) {
-        if (err) { throw err; }
-        res.writeHead(200, { "Content-Type": "text/html"});
-        res.end(jade.compile(data, {"filename":"templates/index.jade"})(), "utf-8");
-      });
+    fs.readFile("templates/index.jade", function(err, data) {
+      if (err) { throw err; }
+      res.writeHead(200, { "Content-Type": "text/html"});
+      res.end(jade.compile(data, {"filename":"templates/index.jade"})(), "utf-8");
     });
   });
 
