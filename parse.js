@@ -1,5 +1,5 @@
 var marked = require('marked'),
-    hl = require('highlight').highlight;
+    hl = require('highlight').Highlight;
 
 marked.setOptions({
   gfm: true,
@@ -18,6 +18,6 @@ module.exports = function parse(markdown) {
     markdown = markdown.substr(match[0].length);
     parsedObject[key] = value;
   }
-  parsedObject["html"] = marked(markdown)
+  parsedObject["html"] = marked(markdown);
   return parsedObject;
 }
