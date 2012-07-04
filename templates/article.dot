@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../public/stylesheets/base.css">
     <link rel="stylesheet" href="../public/stylesheets/skeleton.css">
     <link rel="stylesheet" href="../public/stylesheets/layout.css">
+    <link rel="stylesheet" href="../public/stylesheets/github.css">
     <link rel="shortcut icon" href="../public/images/favicon.ico">
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="72x72" href="../public/images/apple-touch-icon-72x72.png">
@@ -26,7 +27,7 @@
     <p class="leader">{{=it.date}}</p>
 </header>
 
-{{=it.text}}
+{{=it.html}}
 </article>
 </section>
 

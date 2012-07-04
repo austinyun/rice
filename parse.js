@@ -1,12 +1,16 @@
-//TODO come up with a functional algorithm to do this
-//But gosh, I have to say, this is a really clever one
+var marked = require('marked'),
+    hl = require('highlight').highlight;
+
+marked.setOptions({
+  gfm: true,
+  highlight: function(code) {
+    return hl(code);
+  }
+});
+
 module.exports = function parse(markdown) {
   var parsedObject = {},
       match;
-
-  if (!(typeof markdown === 'string')) {
-    markdown = markdown.toString();
-  }
 
   while(match = markdown.match(/^([a-z]+):\s*(.*)\s*\n/i)) {
     var key = match[1].toLowerCase(),
@@ -14,6 +18,6 @@ module.exports = function parse(markdown) {
     markdown = markdown.substr(match[0].length);
     parsedObject[key] = value;
   }
-  parsedObject["markdown"] = markdown;
+  parsedObject["html"] = marked(markdown)
   return parsedObject;
 }
