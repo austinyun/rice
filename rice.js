@@ -15,7 +15,6 @@ module.exports = function rice() {
     res.writeHead(404, { "Content-Type": "text/plain"});
     res.end("Error 404: " + req.url + " not found.");
   },
-      },
       indexTemplate,
       articleTemplate;
 

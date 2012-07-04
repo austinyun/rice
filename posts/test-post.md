@@ -10,3 +10,10 @@ HEADER1
 More stuff in here.
 
 Another paragraph.
+
+```
+var test = function(err, data) {
+    if (err) { throw err };
+    console.log("No error");
+}
+```
