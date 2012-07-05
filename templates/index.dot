@@ -20,12 +20,12 @@
 
 <section id="main" class="twelve columns offset-by-one content">
 
-{{ for (var article in it) { }}
-<article><h3 class="article_title">{{=article}}</h3>
-    <p class="leader">{{=it[article].date}}</p>
-    <p>{{=it[article].summary}}</p>
+{{~it.array :value:index}}
+<article><h3 class="article_title">{{=value.title}}</h3>
+    <p class="leader">{{=value.date}}</p>
+    <p>{{=value.summary}}</p>
 </article>
-{{ } }}
+{{~}}
 
 </section>
 
