@@ -1,8 +1,8 @@
 {
   "name": "rice",
-  "description": "Markdown -> Jade -> Blog",
-  "tags": ["blog","markdown"],
-  "version": "0.0.1",
+  "description": "Markdown -> doT -> Blog",
+  "tags": ["blog","markdown", "doT"],
+  "version": "0.0.2",
   "author": "Austin Yun <w.austin.yun@gmail.com> (http://austinyun.com)",
   "license": "MIT",
   "repository": {
