@@ -16,14 +16,14 @@
 </head>
 <body class="container">
 
-<header id="header"><h1>Page Header</h1><hr></header>
+<header id="header"><h1><a href="http://www.austinyun.com/">Page Header</a></h1><hr></header>
 
 <section id="main" class="twelve columns offset-by-one content">
 
-{{~it.array :value:index}}
-<article><h3 class="article_title">{{=value.title}}</h3>
-    <p class="leader">{{=value.date}}</p>
-    <p>{{=value.summary}}</p>
+{{~it.articles :value}}
+<article><h2><a href={{=value["link"]}}>{{=value["title"]}}</a></h2>
+    <p class="leader">{{=value["date"]}}</p>
+    <p>{{=value["summary"]}}</p>
 </article>
 {{~}}
 

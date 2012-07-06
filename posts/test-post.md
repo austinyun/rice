@@ -4,8 +4,7 @@ Tags: test, post, multi-word tag
 
 This is a test post.
 
-HEADER1
-=======
+### Header
 
 More stuff in here.
 

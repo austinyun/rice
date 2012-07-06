@@ -8,7 +8,7 @@ marked.setOptions({
   }
 });
 
-module.exports = function parse(markdown) {
+module.exports = function (markdown, callback) {
   var parsedObject = {},
       match;
 
@@ -19,5 +19,6 @@ module.exports = function parse(markdown) {
     parsedObject[key] = value;
   }
   parsedObject["html"] = marked(markdown);
-  return parsedObject;
+  parsedObject["summary"] = parsedObject["html"].substr(0, parsedObject["html"].search("</p>"));
+  callback(null, parsedObject);
 }

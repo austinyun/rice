@@ -17,13 +17,13 @@
 </head>
 <body class="container">
 
-<header id="header"><h1>Page Header</h1><hr></header>
+<header id="header"><h1><a href="http://www.austinyun.com/">Page Header</a></h1><hr></header>
 
 <section id="main" class="twelve columns offset-by-one content">
 
 <article>
 <header>
-    <h2 class="article_title">{{=it.title}}</h2>
+    <h2 class="article_title"><a href={{="http://www.austinyun.com/" + it.link}}>{{=it.title}}</a></h2>
     <p class="leader">{{=it.date}}</p>
 </header>
 

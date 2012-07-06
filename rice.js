@@ -1,32 +1,20 @@
-var http = require("http"),
+var async = require("async"),
+    http = require("http"),
     fs = require("fs"),
-    git = require("git-fs"),
-    dot = require("dot"),
     router = require("choreographer").router(),
-    parse = require("./parse");
+    renderer = require("./renderer");
 
 module.exports = function rice() {
 
-  git(process.cwd());
-  console.log("Initialized git at " + process.cwd());
-
-  var write404 = function(req, res, err) {
+  function write404(req, res, err) {
     err && console.log(error);
     res.writeHead(404, { "Content-Type": "text/plain"});
     res.end("Error 404: " + req.url + " not found.");
-  },
-      indexTemplate,
-      articleTemplate;
+  }
 
   router.get("/", function(req, res) {
-    if (!indexTemplate) {
-      fs.readFile("templates/index.dot", function(err, data) {
-        if (err) { return write404(req, res, err); }
-        indexTemplate = dot.template(data);
-      });
-    }
     res.writeHead(200, { "Content-Type": "text/html"});
-    res.end(indexTemplate(testArticleList));
+    renderer.home(res);
   });
 
   router.get("/favicon.ico", function(req, res) {
@@ -53,17 +41,7 @@ module.exports = function rice() {
   });
 
   router.get("/*", function(req, res, path) {
-    if (!articleTemplate) {
-      console.log("Reading article template.");
-      fs.readFile("templates/article.dot", function(err, data) {
-        articleTemplate = dot.template(data);
-      });
-    }
-    fs.readFile("posts/" + path + ".md", "utf-8", function(err, data) {
-      if (err) { return write404(req, res, err); }
-      console.log("Var serving " + path);
-      res.end(articleTemplate(parse(data)));
-    })
+    renderer.article(path, res);
   });
 
   return http.createServer(router);

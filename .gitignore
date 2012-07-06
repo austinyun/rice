@@ -15,3 +15,5 @@ posts
 node_modules
 npm-debug.log
 .npm
+
+test.js
