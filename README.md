@@ -5,6 +5,24 @@ Rice is inspired by the [Wheat blog engine](https://github.com/creationix/wheat)
 using <strike>Jade</strike>[doT](http://github.com/olado/doT/) for templating /
 markdown support (wheat + jade = rice... even though jade is no longer used).
 
+How-To
+======
+
+Rice requires a folder structure like so:
+
+* Root
+    * posts/
+        *contains .md files
+    * public/
+        * stylesheets
+            * contains .css files
+        * images
+            * contains images, such as backgrounds, favicons, etc.
+    * templates/
+        * contains .dot doT template files
+
+A complete example can be found in the examples directory.
+
 Project Outline
 ===============
 

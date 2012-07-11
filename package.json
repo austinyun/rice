@@ -9,10 +9,10 @@
     "type": "git",
     "url": "http://github.com/austinyun/rice"},
   "bugs": "http://github.com/austinyun/rice/issues",
-  "main": "./server.js",
+  "main": "./rice.js",
   "engines": {
-    "node": ">=0.8",
-    "npm": ">=1.1"
+    "node": "latest",
+    "npm": "latest"
   },
   "dependencies": {
     "async": "latest",
