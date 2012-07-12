@@ -1,20 +1,25 @@
 {
   "name": "rice",
   "description": "Markdown -> doT -> Blog",
-  "tags": ["blog","markdown", "doT"],
-  "version": "0.0.1",
+  "tags": [
+    "blog",
+    "markdown",
+    "doT"
+  ],
+  "version": "0.0.2",
   "author": "Austin Yun <w.austin.yun@gmail.com> (http://austinyun.com)",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "http://github.com/austinyun/rice"},
+    "url": "http://github.com/austinyun/rice"
+  },
   "bugs": "http://github.com/austinyun/rice/issues",
   "main": "./rice.js",
   "dependencies": {
     "async": "latest",
     "dot": "latest",
     "choreographer": "latest",
-    "marked" : "latest",
-    "highlight" : "latest"
+    "marked": "latest",
+    "highlight": "latest"
   }
 }
