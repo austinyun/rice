@@ -19,6 +19,7 @@ module.exports = function (markdown, callback) {
     parsedObject[key] = value;
   }
   parsedObject["html"] = marked(markdown);
-  parsedObject["summary"] = parsedObject["html"].substr(0, parsedObject["html"].search("</p>"));
+  parsedObject["summary"] = parsedObject["html"].
+    substr(0, parsedObject["html"].search("</p>"));
   callback(null, parsedObject);
 }

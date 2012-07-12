@@ -3,6 +3,7 @@ var fs = require("fs"),
     dot = require("dot"),
     parse = require("./parse");
 
+//TODO ugly
 function readPost(filename, callback) {
   fs.readFile("posts/" + filename, function(err, markdown) {
     var link = filename.substr(0,filename.length - 3);
@@ -11,11 +12,17 @@ function readPost(filename, callback) {
   });
 }
 
+//TODO ridiculously ugly method of sorting. Relying on array.reverse is a
+//terrible terrible idea.
 function indexArticles(callback) {
   fs.readdir("posts/", function(err, files) {
     async.map(files, readPost, function(err, markdown) {
       async.map(markdown, parse, function(err, results) {
-        callback( {"articles": results} );
+        async.sortBy(results, function(obj, callback) {
+          callback(err, obj.date);
+        }, function(err, sorted) {
+          callback( {"articles": sorted.reverse()} );
+        });
       });
     });
   });
