@@ -14,3 +14,4 @@ FEATURES
         * because of that
 * [MED] GZIP responses
 * [HIGH] add /robots.txt to the routing table
+* [LOW] Search for posts by tag
