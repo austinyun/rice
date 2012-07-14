@@ -8,13 +8,17 @@
   ],
   "version": "0.0.2",
   "author": "Austin Yun <w.austin.yun@gmail.com> (http://austinyun.com)",
-  "license": "MIT",
+  "license": "ISC (http://www.isc.org/software/license)",
   "repository": {
     "type": "git",
     "url": "http://github.com/austinyun/rice"
   },
   "bugs": "http://github.com/austinyun/rice/issues",
   "main": "./rice.js",
+  "engines": {
+    "node": "0.8.x",
+    "npm": "latest"
+  },
   "dependencies": {
     "async": "latest",
     "dot": "latest",
