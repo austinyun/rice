@@ -1,7 +1,7 @@
 BUGS
 ====
 
-* [LOW] Marked is adding an extra paragraph at the start of every article
+* [FIXED] Marked is adding an extra paragraph at the start of every article
 
 FEATURES
 ========
@@ -14,4 +14,3 @@ FEATURES
         * because of that
 * [MED] GZIP responses
 * [HIGH] add /robots.txt to the routing table
-* [LOW] Search for posts by tag
