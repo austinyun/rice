@@ -12,22 +12,25 @@ function write404(req, res, err) {
 module.exports = function rice() {
 
   router.get("/", function(req, res) {
-    res.writeHead(200, { "Content-Type": "text/html"});
     renderer.home(res);
   });
 
   router.get("/favicon.ico", function(req, res) {
     fs.readFile("public/images/favicon.ico", function(err, icon) {
       if (err) { return write404(req, res, err); }
-      console.log("Favicon requested");
       res.writeHead(200, { "Content-Type": "image/x-icon"});
       res.end(icon);
     });
   });
 
+  router.get("/robots.txt", function(req, res) {
+    return write404(req, res);
+  });
+
   router.get("/public/stylesheets/*", function(req, res, path) {
     fs.readFile("public/stylesheets/" + path, function(err, stylesheet) {
       if (err) { return write404(req, res, err); }
+      res.writeHead(200, { "Content-Type": "text/css"})
       res.end(stylesheet);
     });
   });
