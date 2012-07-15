@@ -2,7 +2,7 @@ var marked = require('marked'),
     hl = require('highlight').Highlight;
 
 marked.setOptions({
-  gfm: true,
+  sanitize: true,
   highlight: function(code) {
     return hl(code);
   }
@@ -20,6 +20,6 @@ module.exports = function (markdown, callback) {
   }
   parsedObject["html"] = marked(markdown);
   parsedObject["summary"] = parsedObject["html"].
-    substr(0, parsedObject["html"].search("</p>"));
+    substr(0, parsedObject["html"].search("</p>") + 4);
   callback(null, parsedObject);
 }
