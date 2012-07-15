@@ -4,11 +4,13 @@ var fs = require("fs"),
     parse = require("./parse");
 
 //TODO ugly
+//Have to wrap fs.readFile like this to use with async.map
 function readPost(filename, callback) {
   fs.readFile("posts/" + filename, function(err, markdown) {
-    var link = filename.substr(0,filename.length - 3);
-    var linktag = "link: " + link + "\n";
-    callback(null, linktag + markdown.toString());
+    var link = filename.substr(0,filename.length - 3),
+        linktag = "link: " + link + "\n";
+
+    callback(err, linktag + markdown.toString());
   });
 }
 
@@ -38,11 +40,12 @@ function compileTemplate(template, callback) {
         });
       },
 
-      function(arg, callback){
-        callback(null, dot.template(arg));
+      function(data, callback){
+        callback(null, dot.template(data));
       }
 
       ], function(err, compiledTemplate){
+        if (err) { throw err; }
         callback(compiledTemplate);
       });
 }
