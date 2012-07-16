@@ -19,8 +19,12 @@ function indexArticles(callback) {
 
     function sortByDate(parsed, callback) {
       var iterator = function(obj, callback) {
-        if (obj.date) { callback(null, obj.date); }
-        else { callback("Article has no date.") }
+        // callback(null, obj.date);
+        if (obj.date) {
+          return callback(null, obj.date);
+        } else {
+          console.log(obj.title);
+          return callback("Article has no date.") }
       }
       // Note that this sorts in reverse lexicographical order!
       async.sortBy(parsed, iterator,
