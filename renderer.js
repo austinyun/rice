@@ -3,72 +3,71 @@ var fs = require("fs"),
     dot = require("dot"),
     parse = require("./parse");
 
-function readPost(filename, callback) {
-  fs.readFile("posts/" + filename, "utf-8", function(err, markdown) {
-    var link = filename.substr(0,filename.length - 3),
-        linktag = "link: " + link + "\n";
-    callback(err, linktag + markdown);
-  });
+function compileTemplate(template, callback) {
+  async.waterfall([
+      async.apply(fs.readFile, "templates/" + template + ".dot"),
+      function(data, callback) { callback(null, dot.template(data)); }
+      ], async.apply(callback)
+      );
 }
 
 function indexArticles(callback) {
-  fs.readdir("posts/", function(err, files) {
-      async.map(files, ra, function(err, results) {
-        async.sortBy(results, function(obj, callback) {
-          callback(err, obj.date);
-        }, function(err, sorted) {
-          callback(err, {"articles": sorted.reverse()} );
-        });
-      });
-    });
+  var flow = [
+    async.apply(fs.readdir, "posts/"),
+
+    function(data, callback) { async.map(data, readPost, callback); },
+
+    function sortByDate(parsed, callback) {
+      var iterator = function(obj, callback) {
+        if (obj.date) { callback(null, obj.date); }
+        else { callback("Article has no date.") }
+      }
+      // Note that this sorts in reverse lexicographical order!
+      async.sortBy(parsed, iterator,
+          function(err, sorted) { callback(err, {"articles": sorted.reverse()} ); }
+        );
+    }
+  ];
+
+  async.waterfall(flow, async.apply(callback))
 }
 
-function compileTemplate(template, callback) {
-  async.waterfall(
-      [
-      async.apply(fs.readFile, "templates/" + template + ".dot"),
-
-      function(data, callback) { callback(null, dot.template(data)); }
-
-      ], function(err, compiledTemplate){
-        callback(err, compiledTemplate);
-      });
+function readPost(path, callback) {
+  async.waterfall([
+      async.apply(fs.readFile, "posts/" + path, "utf-8"),
+      async.apply(addFilepath, path),
+      async.apply(parse)
+  ], async.apply(callback))
 }
 
-  function ra(file, callback) {
-    async.waterfall([
-        async.apply(readPost, file),
-        async.apply(parse)
-    ], function(err, results) {
-      callback(err, results);
-    })
-  }
+function addFilepath(path, file, callback){
+  var link = path.substr(0,path.length - 3),
+      tag = "link:" + link + "\n";
+  callback(null, tag + file);
+}
 
 module.exports = {
 
   home: function(res) {
-    async.parallel(
-        [
-        async.apply(compileTemplate, "index"),
-        async.apply(indexArticles)
+    async.parallel([
+      async.apply(compileTemplate, "index"),
+      async.apply(indexArticles)
+      ], function(err, results) {
+        if (err) { throw err; }
+        res.end(results[0](results[1]));
+      }
+      );
+  },
+
+  article: function(path, res, callback) {
+    async.parallel([
+        async.apply(compileTemplate, "article"),
+        async.apply(readPost, path + ".md")
         ], function(err, results) {
-          if (err) { throw err; }
+          if (err) { return callback(err); }
           res.end(results[0](results[1]));
         }
         );
-  },
-
-
-  article: function(path, res, callback) {
-    var file = path + ".md";
-    async.parallel([
-      async.apply(compileTemplate, "article"),
-      async.apply(ra, file)
-
-    ], function(err, results) {
-      if (err) { return callback(err); }
-      res.end(results[0](results[1]));
-    }
-    );
   }
+
 }
