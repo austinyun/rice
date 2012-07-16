@@ -3,100 +3,72 @@ var fs = require("fs"),
     dot = require("dot"),
     parse = require("./parse");
 
-//TODO ugly
-//Have to wrap fs.readFile like this to use with async.map
 function readPost(filename, callback) {
-  fs.readFile("posts/" + filename, function(err, markdown) {
+  fs.readFile("posts/" + filename, "utf-8", function(err, markdown) {
     var link = filename.substr(0,filename.length - 3),
         linktag = "link: " + link + "\n";
-
-    callback(err, linktag + markdown.toString());
+    callback(err, linktag + markdown);
   });
 }
 
-//TODO ridiculously ugly method of sorting. Relying on array.reverse is a
-//terrible terrible idea.
 function indexArticles(callback) {
   fs.readdir("posts/", function(err, files) {
-    async.map(files, readPost, function(err, markdown) {
-      async.map(markdown, parse, function(err, results) {
+      async.map(files, ra, function(err, results) {
         async.sortBy(results, function(obj, callback) {
           callback(err, obj.date);
         }, function(err, sorted) {
-          callback( {"articles": sorted.reverse()} );
+          callback(err, {"articles": sorted.reverse()} );
         });
       });
     });
-  });
 }
 
 function compileTemplate(template, callback) {
   async.waterfall(
       [
-      function(callback){
-        var file = "templates/" + template + ".dot";
-        fs.readFile(file, function(err, data) {
-          callback(err, data);
-        });
-      },
+      async.apply(fs.readFile, "templates/" + template + ".dot"),
 
-      function(data, callback){
-        callback(null, dot.template(data));
-      }
+      function(data, callback) { callback(null, dot.template(data)); }
 
       ], function(err, compiledTemplate){
-        if (err) { throw err; }
-        callback(compiledTemplate);
+        callback(err, compiledTemplate);
       });
 }
+
+  function ra(file, callback) {
+    async.waterfall([
+        async.apply(readPost, file),
+        async.apply(parse)
+    ], function(err, results) {
+      callback(err, results);
+    })
+  }
 
 module.exports = {
 
   home: function(res) {
     async.parallel(
         [
-        function(callback) {
-          compileTemplate("index", function(compiledTemplate) {
-            callback(null, compiledTemplate);
-          });
-        },
-
-        function(callback) {
-          indexArticles( function(index) {
-            callback(null, index);
-          });
-        }
-
+        async.apply(compileTemplate, "index"),
+        async.apply(indexArticles)
         ], function(err, results) {
+          if (err) { throw err; }
           res.end(results[0](results[1]));
         }
         );
   },
 
+
   article: function(path, res, callback) {
-    var file = "posts/" + path + ".md";
-    async.parallel(
-        [
-        function(callback) {
-          compileTemplate("article", function(compiledTemplate) {
-            callback(null, compiledTemplate);
-          });
-        },
+    var file = path + ".md";
+    async.parallel([
+      async.apply(compileTemplate, "article"),
+      async.apply(ra, file)
 
-        function(callback) {
-          fs.readFile(file, "utf-8", function(err, markdown) {
-            if (err) { return callback(err); }
-            parse(markdown, function(err, parsedArticle) {
-              parsedArticle["link"] = path;
-              callback(null, parsedArticle);
-            });
-          });
-        }
-
-        ], function(err, results) {
-          if (err) { return callback(err); }
-          res.end(results[0](results[1]));
-        }
-        );
+    ], function(err, results) {
+      if (err) { return callback(err); }
+      res.end(results[0](results[1]));
+    }
+    );
   }
 }
