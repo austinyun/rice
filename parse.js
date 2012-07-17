@@ -2,6 +2,7 @@ var marked = require('marked'),
     hl = require('highlight').Highlight;
 
 marked.setOptions({
+  gfm: true,
   sanitize: true,
   highlight: function(code) {
     return hl(code);
