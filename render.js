@@ -50,9 +50,17 @@ function addFilepath(path, file, callback){
   callback(null, tag + file);
 }
 
+function notFound(req, res, err) {
+    if (err) { console.log(err); }
+    res.writeHead(404, { "Content-Type": "text/plain"});
+    res.end("Error 404: " + req.url + " not found.");
+}
+
 module.exports = {
 
-  home: function(res) {
+  notFound: notFound,
+
+  home: function(req, res) {
     async.parallel([
       async.apply(compileTemplate, "index"),
       async.apply(indexArticles)
@@ -63,12 +71,12 @@ module.exports = {
       );
   },
 
-  article: function(path, res, callback) {
+  article: function(req, res, path) {
     async.parallel([
         async.apply(compileTemplate, "article"),
         async.apply(readPost, path + ".md")
         ], function(err, results) {
-          if (err) { return callback(err); }
+          if (err) { return notFound(req, res, err); }
           res.end(results[0](results[1]));
         }
         );
