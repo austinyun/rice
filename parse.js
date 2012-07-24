@@ -10,7 +10,7 @@ marked.setOptions({
 module.exports = function (markdown, callback) {
     var key, value, html,
         article = {},
-        pattern = /^([a-z]+):\s*([\w\s\-,]*)\s*\n/i,
+        pattern = /^([a-z]+):\s*(.*)\s*\n/i,
         match = markdown.match(pattern);
 
     // This loop matches all the metadata at the beginning
