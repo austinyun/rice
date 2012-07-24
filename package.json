@@ -6,7 +6,7 @@
     "markdown",
     "doT"
   ],
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "Austin Yun <w.austin.yun@gmail.com> (http://austinyun.com)",
   "license": "ISC (http://www.isc.org/software/license)",
   "repository": {
@@ -23,6 +23,7 @@
     "async": "latest",
     "dot": "latest",
     "choreographer": "latest",
+    "lactate": "latest",
     "marked": "latest",
     "highlight": "latest"
   }
