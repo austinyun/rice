@@ -29,8 +29,8 @@ function indexArticles(callback) {
         async.map(data, readPost, callback);
     }
     function sortByDate(articles, callback) {
+        console.log(articles);
         function iterator(obj, callback) {
-            // callback(null, obj.date);
             if (obj.date) {
                 return callback(null, obj.date);
             }
