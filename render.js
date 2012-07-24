@@ -39,8 +39,10 @@ function indexArticles(callback) {
         }
         // Note that this sorts in reverse lexicographical order!
         async.sortBy(articles, iterator,
-                function(err, sorted) { callback(err, {"articles": sorted.reverse()}); }
-                );
+            function(err, sorted) {
+                if (err) { return callback(err); }
+                callback(err, {"articles": sorted.reverse()});
+            });
     }
 
     async.waterfall([
