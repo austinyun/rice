@@ -6,7 +6,7 @@
     "markdown",
     "doT"
   ],
-  "version": "0.0.5",
+  "version": "0.0.6",
   "author": "Austin Yun <w.austin.yun@gmail.com> (http://austinyun.com)",
   "license": "ISC (http://www.isc.org/software/license)",
   "repository": {
@@ -17,12 +17,12 @@
   "main": "./rice.js",
   "engines": {
     "node": "0.8.x",
-    "npm": "latest"
+    "npm": "1.1.x"
   },
   "dependencies": {
     "async": "latest",
     "dot": "latest",
-    "choreographer": "latest",
+    "router": "latest",
     "lactate": "latest",
     "marked": "latest",
     "highlight": "latest"

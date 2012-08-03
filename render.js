@@ -29,12 +29,11 @@ function indexArticles(callback) {
         async.map(data, readPost, callback);
     }
     function sortByDate(articles, callback) {
-        console.log(articles);
         function iterator(obj, callback) {
             if (obj.date) {
                 return callback(null, obj.date);
             }
-            console.log(obj.title);
+            console.error(obj.title);
             return callback("Article has no date.");
         }
         // Note that this sorts in reverse lexicographical order!
@@ -53,7 +52,7 @@ function indexArticles(callback) {
 }
 
 function notFound(req, res, err) {
-    if (err) { console.log(err); }
+    if (err) { console.error(err); }
     res.writeHead(404, { "Content-Type": "text/plain"});
     res.end("Error 404: " + req.url + " not found.");
 }
@@ -72,10 +71,10 @@ module.exports = {
         });
     },
 
-    article: function(req, res, path) {
+    article: function(req, res) {
         async.parallel({
             "template": async.apply(compileTemplate, "article"),
-            "post": async.apply(readPost, path + ".md")
+            "post": async.apply(readPost, req.url + ".md")
         }, function(err, results) {
             if (err) { return notFound(req, res, err); }
             res.end(results.template(results.post));

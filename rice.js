@@ -1,6 +1,6 @@
 var http = require("http"),
-    lactate = require("lactate").Lactate(),
-    router = require("choreographer").router(),
+    lactate = require("lactate"),
+    router = require("router")(),
     render = require("./render");
 
 module.exports = function rice() {
@@ -13,9 +13,9 @@ module.exports = function rice() {
         lactate.serve("public/images/favicon.ico", req, res);
     });
 
-    router.get("/public/*/*", lactate);
+    router.get("/public/*", lactate.file);
 
-    router.get("/*", render.article);
+    router.get("/{article}", render.article);
 
     return http.createServer(router);
 };
