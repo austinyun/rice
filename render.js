@@ -1,14 +1,8 @@
 var fs = require("fs"),
     async = require("async"),
     dot = require("dot"),
-    parse = require("./parse");
-
-function compileTemplate(template, callback) {
-    async.waterfall([
-        async.apply(fs.readFile, "templates/" + template + ".dot"),
-        function(data, callback) { callback(null, dot.template(data)); }
-    ], async.apply(callback));
-}
+    parse = require("./parse"),
+    read = require("./read");
 
 function readPost(path, callback) {
     function addFilepath(path, file, callback) {
@@ -51,6 +45,13 @@ function indexArticles(callback) {
     ], async.apply(callback));
 }
 
+function compileTemplate(template, callback) {
+    async.waterfall([
+        async.apply(fs.readFile, "templates/" + template + ".dot"),
+        function(data, callback) { callback(null, dot.template(data)); }
+    ], async.apply(callback));
+}
+
 function notFound(req, res, err) {
     if (err) { console.error(err); }
     res.writeHead(404, { "Content-Type": "text/plain"});
@@ -61,23 +62,23 @@ module.exports = {
 
     notFound: notFound,
 
-    home: function(req, res) {
+    home: function(callback) {
         async.parallel({
             "template": async.apply(compileTemplate, "index"),
             "posts": async.apply(indexArticles)
         }, function(err, results) {
             if (err) { throw err; }
-            res.end(results.template(results.posts));
+            callback(results.template(results.posts));
         });
     },
 
-    article: function(req, res) {
+    article: function(req, res, callback) {
         async.parallel({
             "template": async.apply(compileTemplate, "article"),
             "post": async.apply(readPost, req.url + ".md")
         }, function(err, results) {
             if (err) { return notFound(req, res, err); }
-            res.end(results.template(results.post));
+            callback(results.template(results.post));
         });
     }
 
