@@ -1,18 +1,20 @@
-var lactate = require("lactate");
+var lactate = require("lactate"),
+    oppressor = require("oppressor");
 
 module.exports = {
     "robots": function(req, res) {
-        lactate.serve("public/robots.txt", req, res);
+        lactate.file("public/robots.txt", req, res);
     },
 
     "favicon": function(req, res) {
-        lactate.serve("public/images/favicon.ico", req, res);
+        lactate.file("public/images/favicon.ico", req, res);
     },
 
     "staticFile": lactate.file,
 
-    "serve": function(res, data) {
-        // TODO: handle headers better
-        res.end(data);
+    "serve": function(req, res, data) {
+        var s = oppressor(req);
+        s.end(data);
+        s.pipe(res);
     }
 };

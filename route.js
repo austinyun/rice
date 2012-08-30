@@ -8,13 +8,13 @@ var router = require("router")(),
 
 function routeArticle(req, res) {
     render.article(req, res, function(data) {
-        serve.serve(res, data);
+        serve.serve(req, res, data);
     });
 }
 
 function routeHome(req, res) {
     render.home(function(data) {
-        serve.serve(res, data);
+        serve.serve(req, res, data);
     });
 }
 
