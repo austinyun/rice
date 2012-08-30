@@ -19,15 +19,17 @@ function readPost(path, callback) {
 }
 
 function indexArticles(callback) {
+
     function readAllPosts(data, callback) {
         async.map(data, readPost, callback);
     }
+
     function sortByDate(articles, callback) {
         function iterator(obj, callback) {
             if (obj.date) {
                 return callback(null, obj.date);
             }
-            console.error(obj.title);
+            // console.error(obj);
             return callback("Article has no date.");
         }
         // Note that this sorts in reverse lexicographical order!
@@ -68,6 +70,7 @@ module.exports = {
             "posts": async.apply(indexArticles)
         }, function(err, results) {
             if (err) { throw err; }
+            // console.log(results.posts.articles["0"].html);
             callback(results.template(results.posts));
         });
     },
