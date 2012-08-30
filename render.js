@@ -5,16 +5,16 @@ var fs = require("fs"),
     read = require("./read");
 
 function readPost(path, callback) {
-    function addFilepath(path, file, callback) {
-        var link = path.substr(0, path.length - 3),
-            tag = "link:" + link + "\n";
-        callback(null, tag + file);
+    function addFilepath(path, obj, callback) {
+        var link = path.substr(0, path.length - 3);
+        obj.link = link;
+        callback(null, obj);
     }
 
     async.waterfall([
         async.apply(fs.readFile, "posts/" + path, "utf-8"),
-        async.apply(addFilepath, path),
-        async.apply(parse)
+        async.apply(parse),
+        async.apply(addFilepath, path)
     ], async.apply(callback));
 }
 
