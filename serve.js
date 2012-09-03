@@ -1,14 +1,10 @@
-var lactate = require("lactate"),
-    oppressor = require("oppressor");
+var lactate = require("lactate"), // static file server
+    oppressor = require("oppressor"); // streaming compression module
 
 module.exports = {
-    "robots": function(req, res) {
-        lactate.file("public/robots.txt", req, res);
-    },
+    "robots": lactate.file.bind(null, "public/robots.txt"),
 
-    "favicon": function(req, res) {
-        lactate.file("public/images/favicon.ico", req, res);
-    },
+    "favicon": lactate.file.bind(null, "public/images/favicon.ico"),
 
     "staticFile": lactate.file,
 
