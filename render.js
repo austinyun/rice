@@ -7,10 +7,8 @@ function readPost(path, callback) {
 
     // Helpers
     function addFilepath(path, obj, callback) {
-        var link = path.substr(1, path.length - 4);
-        console.log(link);
+        var link = path.substr(0, path.length - 3);
         obj.link = link;
-        console.log(obj.link);
         callback(null, obj);
     }
 
@@ -74,7 +72,6 @@ module.exports = {
             "posts": async.apply(indexArticles)
         }, function(err, results) {
             if (err) { throw err; }
-            // console.log(results.posts.articles["0"].html);
             callback(results.template(results.posts));
         });
     },
@@ -82,7 +79,7 @@ module.exports = {
     article: function(req, res, callback) {
         async.parallel({
             "template": async.apply(compileTemplate, "article"),
-            "post": async.apply(readPost, req.url + ".md")
+            "post": async.apply(readPost, req.params.article + ".md")
         }, function(err, results) {
             if (err) { return notFound(req, res, err); }
             callback(results.template(results.post));
