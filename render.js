@@ -1,10 +1,11 @@
 var fs = require("fs"),
     async = require("async"),
     dot = require("dot"),
-    parse = require("./parse"),
-    read = require("./read");
+    parse = require("./parse");
 
 function readPost(path, callback) {
+
+    // Helpers
     function addFilepath(path, obj, callback) {
         var link = path.substr(0, path.length - 3);
         obj.link = link;
@@ -20,6 +21,7 @@ function readPost(path, callback) {
 
 function indexArticles(callback) {
 
+    // Helpers
     function readAllPosts(data, callback) {
         async.map(data, readPost, callback);
     }
