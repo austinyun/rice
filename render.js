@@ -7,8 +7,10 @@ function readPost(path, callback) {
 
     // Helpers
     function addFilepath(path, obj, callback) {
-        var link = path.substr(0, path.length - 3);
+        var link = path.substr(1, path.length - 4);
+        console.log(link);
         obj.link = link;
+        console.log(obj.link);
         callback(null, obj);
     }
 
