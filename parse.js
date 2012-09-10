@@ -1,4 +1,4 @@
-var jsonfinder = require("json-finder"),
+var jsonfinder = require("json-finder")(),
     marked = require("marked"),
     hl = require("highlight").Highlight;
 
