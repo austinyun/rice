@@ -1,45 +1,48 @@
 var fs = require("fs"),
     async = require("async"),
     dot = require("dot"),
-    parse = require("./parse");
+    extractMetadata = require("json-finder")(),
+    hl = require("highlight").Highlight,
+    parseMarkdown = require("marked").setOptions({
+        gfm: true, // Github flavored Markdown
+        sanitize: true,
+        highlight: hl
+    });
 
-function readPost(path, callback) {
+function generateSummary(html) {
+    var firstParagraph = html.search("</p>") + 4;
+    return html.substr(0, firstParagraph);
+}
 
-    // Helpers
-    function addFilepath(path, obj, callback) {
-        var link = path.substr(0, path.length - 3);
-        obj.link = link;
-        callback(null, obj);
-    }
-
-    async.waterfall([
-        async.apply(fs.readFile, "posts/" + path, "utf-8"),
-        async.apply(parse),
-        async.apply(addFilepath, path)
-    ], async.apply(callback));
+function generatePost(path, callback) {
+    fs.readFile("posts/" + path, "utf-8", function(err, rawFile) {
+        extractMetadata(rawFile, function(err, article, start, end) {
+            article.html = parseMarkdown(rawFile.slice(end));
+            article.summary = generateSummary(article.html);
+            article.link = path.substr(0, path.length - 3);
+            callback(null, article);
+        });
+    });
 }
 
 function indexArticles(callback) {
-
     // Helpers
     function readAllPosts(data, callback) {
-        async.map(data, readPost, callback);
+        async.map(data, generatePost, callback);
     }
-
     function sortByDate(articles, callback) {
         function iterator(obj, callback) {
             if (obj.date) {
                 return callback(null, obj.date);
             }
-            // console.error(obj);
-            return callback("Article has no date.");
+            return callback(new Error("Article has no date."));
         }
         // Note that this sorts in reverse lexicographical order!
-        async.sortBy(articles, iterator,
-            function(err, sorted) {
-                if (err) { return callback(err); }
-                callback(err, {"articles": sorted.reverse()});
-            });
+        // hence the sorted.reverse() at the end
+        async.sortBy(articles, iterator, function(err, sorted) {
+            if (err) { return callback(err); }
+            callback(err, {"articles": sorted.reverse()});
+        });
     }
 
     async.waterfall([
@@ -79,10 +82,21 @@ module.exports = {
     article: function(req, res, callback) {
         async.parallel({
             "template": async.apply(compileTemplate, "article"),
-            "post": async.apply(readPost, req.params.article + ".md")
+            "post": async.apply(generatePost, req.params.article + ".md")
         }, function(err, results) {
             if (err) { return notFound(req, res, err); }
             callback(results.template(results.post));
+        });
+    },
+
+    json: function(req, res, callback) {
+        var filepath = "posts/" + req.params.article + ".md";
+        fs.readFile(filepath, "utf-8", function(err, rawFile) {
+            extractMetadata(rawFile, function(err, article, start, end) {
+                if (err) { throw err; }
+                article.content = rawFile.slice(end);
+                callback(JSON.stringify(article));
+            });
         });
     }
 
