@@ -16,6 +16,7 @@ function generateSummary(html) {
 
 function generatePost(path, callback) {
     fs.readFile("posts/" + path, "utf-8", function(err, rawFile) {
+        if (err) { return callback(err); }
         extractMetadata(rawFile, function(err, article, start, end) {
             article.html = parseMarkdown(rawFile.slice(end));
             article.summary = generateSummary(article.html);
@@ -59,23 +60,18 @@ function compileTemplate(template, callback) {
     ], async.apply(callback));
 }
 
-function notFound(req, res, err) {
-    if (err) { console.error(err); }
-    res.writeHead(404, { "Content-Type": "text/plain"});
-    res.end("Error 404: " + req.url + " not found.");
-}
-
 module.exports = {
-
-    notFound: notFound,
 
     home: function(callback) {
         async.parallel({
             "template": async.apply(compileTemplate, "index"),
             "posts": async.apply(indexArticles)
         }, function(err, results) {
-            if (err) { throw err; }
-            callback(results.template(results.posts));
+            if (err) {
+                callback(err);
+            } else {
+                callback(null, results.template(results.posts));
+            }
         });
     },
 
@@ -84,20 +80,29 @@ module.exports = {
             "template": async.apply(compileTemplate, "article"),
             "post": async.apply(generatePost, req.params.article + ".md")
         }, function(err, results) {
-            if (err) { return notFound(req, res, err); }
-            callback(results.template(results.post));
+            if (err) {
+                callback(err);
+            } else {
+                callback(null, results.template(results.post));
+            }
         });
     },
 
     json: function(req, res, callback) {
         var filepath = "posts/" + req.params.article + ".md";
         fs.readFile(filepath, "utf-8", function(err, rawFile) {
-            extractMetadata(rawFile, function(err, article, start, end) {
-                if (err) { throw err; }
-                article.content = rawFile.slice(end);
-                callback(JSON.stringify(article));
-            });
+            if (err) {
+                callback(err);
+            } else {
+                extractMetadata(rawFile, function(err, article, start, end) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        article.content = rawFile.slice(end);
+                        callback(null, JSON.stringify(article));
+                    }
+                });
+            }
         });
     }
-
 };
