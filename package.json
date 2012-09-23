@@ -6,7 +6,7 @@
     "markdown",
     "doT"
   ],
-  "version": "0.0.10",
+  "version": "0.0.11",
   "author": "Austin Yun <w.austin.yun@gmail.com> (http://austinyun.com)",
   "license": "ISC (http://www.isc.org/software/license)",
   "repository": {
@@ -15,6 +15,9 @@
   },
   "bugs": "http://github.com/austinyun/rice/issues",
   "main": "./rice.js",
+  "scripts": {
+      "test": "tap ./test/test.js"
+  },
   "engines": {
     "node": "0.8.x",
     "npm": "1.1.x"
@@ -28,5 +31,9 @@
     "marked": "latest",
     "highlight": "latest",
     "json-finder": "latest"
+  },
+  "devDependencies": {
+      "request": "latest",
+      "tap": "latest"
   }
 }

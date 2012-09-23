@@ -37,6 +37,13 @@ module.exports = function() {
     router.get("/", routeHome);
     router.get("/robots.txt", serve.robots);
     router.get("/favicon.ico", serve.favicon);
+
+    // TODO
+    // Static pages should be dynamically configured at startup
+    // probably by checking the public/pages directory and making
+    // one route for every HTML file in it
+    router.get("/about", serve.about);
+
     router.get("/public/*", serve.staticFile);
     router.get("/{article}.json", routeJSON);
     router.get("/{article}.markdown", routeMarkdown);

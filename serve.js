@@ -6,6 +6,8 @@ module.exports = {
 
     "favicon": lactate.file.bind(null, "public/images/favicon.ico"),
 
+    "about": lactate.file.bind(null, "public/pages/about.html"),
+
     "staticFile": lactate.file,
 
     "serve": function(req, res, data) {
