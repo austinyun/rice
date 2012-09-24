@@ -5,7 +5,6 @@ var fs = require("fs"),
     hl = require("highlight").Highlight,
     parseMarkdown = require("marked").setOptions({
         gfm: true, // Github flavored Markdown
-        sanitize: true,
         highlight: hl
     });
 
